@@ -1,0 +1,291 @@
+.centered_for_list {
+    font-size: 50px;
+    text-align: center;
+    border: 5px solid #ddd;
+    margin-top: 15px;
+    background-color: #f6f6f6;
+    padding: 10px;
+    background-image: url("US_FLAG_3.png");
+    background-size:100% 333px;
+    min-height: 50px;
+    color: aliceblue;
+    -webkit-text-stroke: black;
+    -webkit-text-stroke-color: black;
+    -webkit-text-stroke-width: 1.5px;
+    border-radius: 8px;
+    
+    
+}
+
+
+
+#page_title {
+    text-align: center;
+    font-size: 32px;
+    margin-top: -15px;
+    margin-bottom: 8px;
+    
+
+}
+
+
+#SenatorList {
+    
+    width: 70%;
+    font-size: 16px;
+    float:left;
+    border: 5px solid rgb(10, 49, 97);
+    margin-bottom: 12px;
+    margin: auto;
+    padding: auto;
+    min-height: 565px;
+    max-height: 550px;
+    overflow: scroll;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    
+
+}
+
+#senatorDetails a {
+    text-align: center;
+    border: 3px solid rgb(10, 49, 97);
+    margin-top: -1px;
+    background-color: rgb(10, 49, 97);
+    padding: 10px;
+    text-decoration: none;
+    
+    font-size: 17px;
+    color:aliceblue;
+    display: block;
+    min-height: 3px;
+    max-height: 18px;
+    margin-top: 10px;
+    
+}
+
+#ulSenators li {
+    text-align: center;
+    border: 5px solid #ddd;
+    margin-top: -1px;
+    background-color: #f6f6f6;
+    padding: 10px;
+    text-decoration: none;
+    font-size: 18px;
+    color: black;
+    display: block;
+    min-height: 20px;
+    margin-bottom: 5px;
+
+}
+#ulSenators a {
+    text-align: center;
+    border: 3px solid rgb(221, 221, 221);
+    margin-top: -1px;
+    background-color: #f6f6f6;
+    padding: 10px;
+    text-decoration: none;
+    
+    font-size: 17px;
+    color: black;
+    display: block;
+    min-height: 3px;
+    max-height: 75px;
+    margin-top: 10px;
+    
+}
+
+
+
+
+a:hover {
+    cursor:pointer;
+}
+
+
+#ulSenators a:hover {
+    background-color:#ffffff;
+    font-size: 18px;
+    
+}
+
+#senatorDetails {
+    float:right;
+    font-size: 17px;
+    max-width: 23%;
+    border: 5px solid rgb(10, 49, 97);
+    min-width:23% ;
+   
+    min-height: 520px;
+    padding: 4px;
+    text-align: center;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+
+
+}
+
+#details_title {
+    min-width: 23%;
+    background-color:rgb(10, 49, 97);
+    color: aliceblue;
+    max-height: 20px;
+    float:right;
+    
+    padding: 9px;
+    text-align: center;
+    font-size: 18px;
+}
+  
+
+.party_color_rep {
+    color:crimson;
+}
+.party_color_dem {
+    color:rgb(47, 20, 220);
+}
+
+
+#senatorroles {
+    text-align: center;
+    border: 5px solid #e9e9e9;
+    background-color: #f6f6f6;
+    padding: 10px;
+    text-decoration: none;
+    font-size: 20px;
+    color: black;
+    display: block;
+    min-height: 50px;
+    line-height: 20px;
+    margin: auto;
+    max-height: 1000px;
+    overflow: auto;
+    border-radius: 6px;
+    
+    
+}
+#senatorcount {
+    
+    text-align: center;
+    border: 5px solid rgb(179, 25, 66);
+    margin-top: -1px;
+    background-color: #f6f6f6;
+    padding: 10px;
+    text-decoration: none;
+    font-size: 25px;
+    color: black;
+    display: block;
+    min-height: 50px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+}
+
+#US_FLAG_1 {
+    margin: -60px;
+    
+    display: block;
+    margin-left: auto;
+    width: 230px;
+    opacity: 1;
+    margin-right: 18%;
+
+}
+
+
+#Senate_Seal {
+    margin: -105px;
+    
+    display: block;
+    margin-left: 25%;
+    margin-right: auto;
+    width: 100px;
+    opacity: 1;
+    float: left;
+
+}
+
+#seat_table {
+    margin-left: 15%;
+  
+}
+
+#bar1 {
+    background-color:rgb(10, 49, 97);
+    color: aliceblue;
+}
+
+
+#bar2 {
+    background-color:rgb(179, 25, 66);
+    color: aliceblue;
+}
+
+
+#bar3 {
+    background-color:rgb(121, 121, 121);
+    color: aliceblue;
+}
+
+#rankfilter {
+    font-size: 15px;
+
+}
+
+#partyfilter {
+    font-size: 15px;
+}
+
+#statefilter {
+    font-size: 15px;
+    
+    
+}
+
+
+#filters {
+    background-color: rgb(10, 49, 97);
+    color:white;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 20px;
+    padding-top: 15px;
+    border: solid rgb(10, 49, 97);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    
+}
+
+#filters label {
+    font-size: 20px; 
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+#filters select {
+    margin-right: 20px;
+    padding: 10px 15px;
+    border: 1px solid #ccc; 
+    border-radius: 5px;
+    background-color: white; 
+    font-size: 16px; 
+    color: #333;
+}
+
+#filters button {
+    text-align: center;
+    font-size: 18px; 
+    padding: 10px 30px;
+    border: black;
+    border-radius: 5px;
+    background-color: rgb(179, 25, 66);
+    color: white;
+    border-style:hidden;
+    cursor: pointer;
+    transition: background-color 0.5s ease;
+}
+
+#filters button:hover {
+    background-color: gray;
+    cursor: pointer;
+}

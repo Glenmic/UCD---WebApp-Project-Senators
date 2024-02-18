@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="senators.css">
+</head>
+    <body>
+
+        <img id="US_FLAG_1" src="US_FLAG_1.png" alt="Flag of the United States" width="250px">
+        <img id="Senate_Seal" style="display:block;" src="Senate_seal.png" alt="Flag of the United States" width="120px">
+        <p id="page_title">US Senate Seats and Senator Information</p>
+
+        
+        <div id="senatorcount">
+     
+        </div>
+       
+        <div id="senatorroles">
+        
+        </div>
+
+        <h1 class="centered_for_list">List of US Senators</h1>
+
+        <div id="filters">
+
+            <label>Party:</label>
+            <select id="partyfilter">
+                <option value="all">Show All</option>
+                <option value="Democrat">Democrat</option>
+                <option value="Republican">Republican</option>
+                <option value="Independent">Independent</option>
+            </select>
+
+            <label>State:</label>
+            <select id="statefilter">
+                <option value="all">Show All</option>
+                <option value="ID">Idaho</option>
+                <option value="IA">Iowa</option>
+                <option value="VT">Vermont</option>
+                <option value="AK">Alaska</option>
+                <option value="WA">Washington</option>
+                <option value="NY">New York</option>
+                <option value="AL">Alabama</option>
+                <option value="OR">Oregon</option>
+                <option value="MO">Missouri</option>
+                <option value="AR">Arkansas</option>
+                <option value="NC">North Carolina</option>
+                <option value="KS">Kansas</option>
+                <option value="OH">Ohio</option>
+                <option value="PA">Pennsylvania</option>
+                <option value="MD">Maryland</option>
+                <option value="SD">South Dakota</option>
+                <option value="CO">Colorado</option>
+                <option value="IN">Indiana</option>
+                <option value="OK">Oklahoma</option>
+                <option value="SC">South Carolina</option>
+                <option value="CT">Connecticut</option>
+                <option value="FL">Florida</option>
+                <option value="KY">Kentucky</option>
+                <option value="ND">North Dakota</option>
+                <option value="UT">Utah</option>
+                <option value="WI">Wisconsin</option>
+                <option value="HI">Hawaii</option>
+                <option value="IL">Illinois</option>
+                <option value="LA">Louisiana</option>
+                <option value="NH">New Hampshire</option>
+                <option value="NV">Nevada</option>
+                <option value="DE">Delaware</option>
+                <option value="CA">California</option>
+                <option value="MI">Michigan</option>
+                <option value="TN">Tennessee</option>
+                <option value="NJ">New Jersey</option>
+                <option value="MS">Mississippi</option>
+                <option value="MN">Minnesota</option>
+                <option value="MT">Montana</option>
+                <option value="RI">Rhode Island</option>
+                <option value="WY">Wyoming</option>
+                <option value="NM">New Mexico</option>
+                <option value="WV">West Virginia</option>
+                <option value="AZ">Arizona</option>
+                <option value="MA">Massachusetts</option>
+                <option value="ME">Maine</option>
+                <option value="NE">Nebraska</option>
+                <option value="TX">Texas</option>
+                <option value="VA">Virginia</option>
+                <option value="GA">Georgia</option>
+            </select>
+
+            <label>Rank:</label>
+            <select id="rankfilter">
+                <option value="all">Show All</option>
+                <option value="senior">Senior</option>
+                <option value="junior">Junior</option>
+            </select>
+
+            <button onclick="applyFiltersFunction()">Filter Senators</button>
+        </div>
+
+
+        <div id="SenatorList">
+
+        <ul id="ulSenators">
+        </ul>
+
+        </div>
+        <div id="details_title">
+            More Info
+            </div>
+        <div id="senatorDetails">
+            
+
+        </div>
+
+        
+        
+        <script>
+            
+            // Initial call to fetch and display senator data
+            getSenators();
+
+            let senators = [];
+
+            
+            async function getSenators(){
+                //function to find and assign data from JSON file, and call some functions
+                const url = "senators.json";
+                const promise = await fetch(url);
+                const senatorData = await promise.json();
+                senators = senatorData.objects;
+                displaySenators();
+                
+                graphingFunction(senatorData.objects);
+                leadershiproleFunction(senatorData.objects)
+                SearchableListFunction(senatorData.objects)
+
+            }
+
+            
+            function graphingFunction(arr) {
+                //generates the horizontal bar chart
+                //initialize party seat counts to zero
+                let democratCount = 0
+                let republicanCount = 0
+                let independentCount = 0
+                //for each element in senator list, add to relevant senator count
+
+                for (let i = 0; i < arr.length; i++) {
+                    if (arr[i].party == "Democrat")
+                    democratCount+=1
+                    if (arr[i].party == "Republican")
+                    republicanCount+=1
+                    if (arr[i].party == "Independent")
+                    independentCount+=1
+            }
+            //add title to the string that will be added to the horizontal bar chart html element
+            outcount = 'Current Seat Counts in the US Senate' //`Democrats: ${democratCount}, Republicans: ${republicanCount}, Independents: ${independentCount}`;
+            //find party seat counts as percentages, add proportionally to them to optimise the graph size
+            Total_party_count = democratCount + republicanCount + independentCount
+            Democrat_Proportion = (democratCount/Total_party_count)*100 + (democratCount/Total_party_count)*65
+            Republican_Proportion = (republicanCount/Total_party_count)*100 + (republicanCount/Total_party_count)*65
+            Independent_proportion = (independentCount/Total_party_count)*100 + (independentCount/Total_party_count)*65
+            //adding the title
+            document.getElementById("senatorcount").innerHTML = outcount;
+            //adding the chart, widths irrelevent - will be changed below
+            //table uses divs on rows of a table with widths relative to seat proportions
+
+            chart = '<table style="width:75%;" id="seat_table"><tr><td style="width:70px;">Democrat</td><td><div style="width:60%;" id="bar1"></div>'
+                  +'</td></tr><tr><td>Republican</td><td><div style="width:100%;" id="bar2"></div>'
+                    +'</td></tr><tr><td>Independent</td><td><div style="width:100%;" id="bar3"></div>'
+                  +'</td></tr></table>'
+            //add chart to the senatorcount div
+            document.getElementById("senatorcount").innerHTML += chart;
+            //changing the divs within the table to have text displaying the seat count
+            document.getElementById("bar1").innerHTML += String(democratCount)
+            document.getElementById("bar2").innerHTML += String(republicanCount)
+            document.getElementById("bar3").innerHTML += String(independentCount)
+            //changing the widths of the divs to be proportional to the seat count
+            document.getElementById("bar1").style.width = Democrat_Proportion+ "%";
+            document.getElementById("bar2").style.width = Republican_Proportion +"%";
+            document.getElementById("bar3").style.width = Independent_proportion+ "%";
+            
+            }
+            
+            
+            function leadershiproleFunction(arr) {
+            //this function finds the roles and displays them in senatorroles div
+            //assigns empty strings, increments through JSON and finds and appends the roles, adding required text
+            
+                outrolesdem = "";
+                outrolesrep = "";
+                outrolesind = "";
+                for (let i = 0; i < arr.length; i++) {
+                    if (arr[i].party === "Democrat" && arr[i].leadership_title !== null) {
+                        outrolesdem += "<i>" + arr[i].leadership_title + "</i>" + ": " + "<b>" + arr[i].person.firstname + " " + arr[i].person.lastname + "</b> (" + arr[i].party + ")" + "<br><br>";
+                    }
+                    if (arr[i].party === "Republican" && arr[i].leadership_title !== null) {
+                        outrolesrep += "<i>" + arr[i].leadership_title + "</i>" + ": " + "<b>" + arr[i].person.firstname + " " + arr[i].person.lastname + "</b> (" + arr[i].party + ")" + "<br><br>";
+                    }
+                    if (arr[i].party === "Independent" && arr[i].leadership_title !== null) {
+                        outrolesind += "<i>" + arr[i].leadership_title + "</i>" + ": " + arr[i].person.firstname + " " + arr[i].person.lastname + " (" + arr[i].party + ")" + "<br><br>";
+                    }
+                }
+            //the following states no position is held if no member of a party holds a position - i.e. if the string remains empty
+                if (outrolesdem === "")
+                    outrolesdem = "No democrats hold leadership positions."
+                if (outrolesrep === "")
+                    outrolesrep = "No republicans hold leadership positions."
+                if (outrolesind === "")
+                    outrolesind = "No independents hold leadership positions."
+            //adds the generated strings to the div, along with party symbols
+                document.getElementById("senatorroles").innerHTML =
+                '<img id="Democratic_Logo" src="Democratic_Disk.png" alt="Democrat Logo" height="70px">'
+            
+                + "<br> <h3>Democratic Party Leadership Roles:</h3>" + outrolesdem +
+                '<img id="Republican_Logo" src="Republican_Disc.png" alt="Republican Logo" height="70px">'
+
+                + "<br> <h3>Republican Party Leadership Roles:</h3>" + outrolesrep 
+                + "<br> <h3>Independent Leadership Roles:</h3>" + outrolesind;
+            }
+
+
+            // Creates a searchable and filterable list of senators
+            function SearchableListFunction(arr) {
+            //generates the elements and adds information for the list of total senators
+            //changes color of party affiliation text to relevant party color
+            //allows clicking link to generate information in an additional details div
+
+                const ulSenators = document.getElementById('ulSenators');
+                ulSenators.innerHTML = ''; 
+                
+                for (let i = 0; i < arr.length; i++) {
+                    
+                    const senator = arr[i];
+                    const SenatorEntry = document.createElement('li');
+                    SenatorEntry.textContent = senator.person.firstname + ' ' + senator.person.lastname + ", " + senator.description + ", Gender: " + senator.person.gender;
+                    
+                    const senatorlink = document.createElement('a');
+                    senatorlink.textContent = 'Click here for more info about '+ senator.person.firstname + ' ' + senator.person.lastname;
+                    
+                    const senatorgovtrack = document.createElement('a');
+                    senatorgovtrack.href = senator.person.link;
+                    senatorgovtrack.textContent = "Link to Govtrack page";
+                    senatorgovtrack.target = '_blank';
+
+                
+                    
+
+                        const senatorpartycolordem = document.createElement('p');
+                        senatorpartycolordem.className = "party_color_dem";
+
+                        const senatorpartycolorrep = document.createElement('p');
+                        senatorpartycolorrep.className = "party_color_rep";
+                        
+                        const senatorpartycolorind = document.createElement('p');
+                        senatorpartycolorind.className = "party_color_ind";
+                        
+
+                    ulSenators.appendChild(SenatorEntry)
+                    
+
+                    if (arr[i].party === "Republican") {
+                        SenatorEntry.append(senatorpartycolorrep)
+                        }
+                    if (arr[i].party === "Democrat") {
+                        SenatorEntry.append(senatorpartycolordem)
+                        }   
+                    if (arr[i].party === "Independent") {
+                        SenatorEntry.append(senatorpartycolorind)
+                        }
+                    
+                    SenatorEntry.appendChild(senatorlink)
+                    SenatorEntry.appendChild(senatorgovtrack)
+
+                    SenatorEntry.addEventListener('click', function() {
+                        displaySenatorDetails(senator);
+                    });
+
+                    ulSenators.appendChild(SenatorEntry);
+                    }
+
+                
+                const partyColorRep = document.getElementsByClassName("party_color_rep");
+                const partyColorDem = document.getElementsByClassName("party_color_dem");
+                const partyColorInd = document.getElementsByClassName("party_color_ind")
+
+                for (let i = 0; i < partyColorRep.length; i++) {
+                partyColorRep[i].innerHTML = "REPUBLICAN";
+                }
+
+                for (let i = 0; i < partyColorDem.length; i++) {
+                partyColorDem[i].innerHTML = "DEMOCRAT";
+                }
+
+                for (let i = 0; i < partyColorInd.length; i++) {
+                partyColorInd[i].innerHTML = "INDEPENDENT";
+                }
+
+
+            }
+
+
+            // Applies selected filters to the list of senators
+            function applyFiltersFunction() {
+            //first portion finds the relevant filter information that is already added to the dropdowns
+            //second section applies a filter text that returns a boolean to allow or deny a particular list entry
+
+                const partyFilter = document.getElementById('partyfilter').value;
+                const stateFilter = document.getElementById('statefilter').value;
+                const rankFilter = document.getElementById('rankfilter').value;
+    
+                let filteredSenators;
+
+            // Check if the party filter is set to 'all'
+                if (partyFilter === 'all') {
+                    filteredSenators = groupByParty(senators);
+                } else {
+                    filteredSenators = senators.filter(function(senator) {
+            //if value is equal to all or the filter option is equal to the relevant attribute of the senator, senator is added
+                        const matchesParty = senator.party === partyFilter;
+                        const matchesState = stateFilter === 'all' || senator.state === stateFilter;
+                        const matchesRank = rankFilter === 'all' || senator.senator_rank === rankFilter;
+                        return matchesParty && matchesState && matchesRank;
+                    });
+                }
+
+                // Apply state and rank filters to the grouped senators
+                if (partyFilter === 'all') {
+                    filteredSenators = filteredSenators.filter(function(senator) {
+                        const matchesState = stateFilter === 'all' || senator.state === stateFilter;
+                        const matchesRank = rankFilter === 'all' || senator.senator_rank === rankFilter;
+                        return matchesState && matchesRank;
+                    });
+                }
+
+
+                const ulSenators = document.getElementById('ulSenators');
+                ulSenators.innerHTML = '';
+
+                SearchableListFunction(filteredSenators);
+            
+            }
+            
+            
+
+            // Displays detailed information for a selected senator
+            function displaySenatorDetails(senator) {
+                const detailsDiv = document.getElementById('senatorDetails');
+                detailsDiv.innerHTML = '';
+
+                const office = document.createElement('p');
+                office.textContent = `Office: ${senator.extra.office}`;
+                detailsDiv.appendChild(office);
+
+                const birth = document.createElement('p');
+                birth.textContent = `Date of Birth: ${senator.person.birthday}`;
+                detailsDiv.appendChild(birth);
+
+                const startdate = document.createElement('p');
+                startdate.textContent = `Start Date: ${senator.startdate}`;
+                detailsDiv.appendChild(startdate);
+
+                if (senator.person.twitterid) {
+                    const twitter = document.createElement('p');
+                    twitter.textContent = `Twitter: @${senator.person.twitterid}`;
+                    detailsDiv.appendChild(twitter);
+                }
+                if (senator.person.youtubeid) {
+                    const youtube = document.createElement('p');
+                    youtube.textContent = `YouTube: ${senator.person.youtubeid}`;
+                    detailsDiv.appendChild(youtube);
+                }
+
+                if (senator.website) {
+                    const website = document.createElement('a');
+                    website.href = senator.website;
+                    website.textContent = 'Website';
+                    website.target = '_blank';
+                    detailsDiv.appendChild(website);
+                }
+            }
+
+
+            // Displays senators based on the selected party filter
+            function displaySenators() {
+                const partyFilter = document.getElementById('partyfilter').value;
+                let filteredSenators = senators;
+
+                // If the party filter is set to 'all', group senators by party
+                if (partyFilter === 'all') {
+                    filteredSenators = groupByParty(senators);
+                } else {
+                
+                    filteredSenators = senators.filter(senator => senator.party === partyFilter);
+                }
+
+                // Display the senators
+                SearchableListFunction(filteredSenators);
+            }
+
+            
+            
+            // Group senators by party
+            function groupByParty(arr) {
+                let democrat_group = [];
+                let republican_group = [];
+                let independent_group = [];
+
+                for (let i = 0; i < arr.length; i++) {
+                    if (arr[i].party === "Democrat") {
+                        democrat_group.push(arr[i]);
+                    } else if (arr[i].party === "Republican") {
+                        republican_group.push(arr[i]);
+                    } else if (arr[i].party === "Independent") {
+                        independent_group.push(arr[i]);
+                    }
+                }
+
+                
+                const arr_grouped = democrat_group.concat(republican_group, independent_group);
+
+                return arr_grouped;
+            }
+
+        </script>
+        
+    </body>
+</html>
